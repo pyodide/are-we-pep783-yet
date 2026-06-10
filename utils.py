@@ -1,20 +1,14 @@
 import datetime
 import json
+import re
 
 import pytz
 import requests_cache
 
 BASE_URL = "https://pypi.org"
-# Provenance began to be persisted on 2024-10-03
-# And `pypa/gh-action-pypi-publish` turned it automatically on 2024-10-29
-ATTESTATION_ENABLEMENT = datetime.datetime(2024, 10, 29, tzinfo=datetime.timezone.utc)
 
-PUBLISHER_URLS = (
-    "https://github.com",
-    "http://github.com",
-    "http://gitlab.com",
-    "https://gitlab.com",
-)
+# The PEP 783 platform tag for Pyodide/Emscripten wheels
+PYEMSCRIPTEN_TAG_RE = re.compile(r"pyemscripten_\d+_\d+_wasm32")
 
 DEPRECATED_PACKAGES = {
     "BeautifulSoup",
@@ -32,86 +26,76 @@ DEPRECATED_PACKAGES = {
 SESSION = requests_cache.CachedSession("requests-cache", expire_after=60 * 60)
 
 
-def get_simple_url(package_name):
-    return f"{BASE_URL}/simple/{package_name}/"
-
-
 def get_json_url(package_name):
     return f"{BASE_URL}/pypi/{package_name}/json"
 
 
-def annotate_wheels(packages):
+def normalize(name):
+    # PEP 503 normalization.
+    return re.sub(r"[-_.]+", "-", name).lower()
+
+
+def get_pyodide_recipe_packages():
+    print("Getting pyodide-recipes package list...")
+    with open("pyodide-recipes-packages.json") as f:
+        return set(json.load(f)["packages"])
+
+
+def annotate_wheels(packages, recipe_packages):
     print("Getting wheel data...")
     num_packages = len(packages)
     for index, package in enumerate(packages):
         print(index + 1, num_packages, package["name"])
-        has_provenance = False
-        from_supported_publisher = False
 
-        json_response = SESSION.get(get_json_url(package["name"]))
-        json_response.raise_for_status()
-        json_data = json_response.json()
-        info = json_data["info"]
-        project_urls = info["project_urls"] or {}
-        for url in project_urls.values():
-            if url.startswith(PUBLISHER_URLS):
-                from_supported_publisher = True
-                break
-
-        # info["version"] is what PyPI considers the latest stable release.
-        stable_filenames = {
-            f["filename"] for f in json_data["releases"][info["version"]]
-        }
-
-        simple_response = SESSION.get(
-            get_simple_url(package["name"]),
-            headers={"Accept": "application/vnd.pypi.simple.v1+json"},
-        )
-        if simple_response.status_code != 200:
+        response = SESSION.get(get_json_url(package["name"]))
+        if response.status_code != 200:
             print(" ! Skipping " + package["name"])
             continue
-        simple = simple_response.json()
+        data = response.json()
+        info = data["info"]
 
-        stable_files = [
-            f
-            for f in simple["files"]
-            if f["filename"] in stable_filenames
-        ]
-        if not stable_files:
-            print(" ! Skipping " + package["name"] + " (no stable files)")
-            continue
+        has_pep783_wheel = False
+        has_pure_python_wheel = False
+        # info["version"] is what PyPI considers the latest stable release.
+        for f in data["releases"].get(info["version"], []):
+            if f["packagetype"] != "bdist_wheel":
+                continue
+            # The wheel filename is:
+            # {distribution}-{version}(-{build tag})?-{python tag}-{abi tag}-{platform tag}.whl
+            # https://packaging.python.org/en/latest/specifications/binary-distribution-format/#file-name-convention
+            tags = f["filename"].removesuffix(".whl").split("-")
+            abi_tag, platform_tag = tags[-2], tags[-1]
+            if PYEMSCRIPTEN_TAG_RE.search(platform_tag):
+                has_pep783_wheel = True
+            if abi_tag == "none":
+                has_pure_python_wheel = True
 
-        if stable_files[-1].get("provenance", None):
-            has_provenance = True
+        has_recipe = normalize(package["name"]) in recipe_packages
 
-        latest_upload = max(
-            datetime.datetime.fromisoformat(f["upload-time"]) for f in stable_files
-        )
-
-        package["wheel"] = has_provenance
-
-        # Display logic. I know, I'm sorry.
-        package["value"] = 1
-        if has_provenance:
+        package["wheel"] = has_pep783_wheel
+        if has_pep783_wheel:
             package["css_class"] = "success"
-            package["icon"] = "🔏"
-            package["title"] = "This package provides attestations."
-        elif not from_supported_publisher:
-            package["css_class"] = "unsupported"
-            package["icon"] = ""
+            package["icon"] = "🟢"
+            package["title"] = "Ships a PEP 783 pyemscripten wheel on PyPI."
+        elif has_recipe and has_pure_python_wheel:
+            package["css_class"] = "recipe-pure-py"
+            package["icon"] = "🩹"
             package["title"] = (
-                "This package is published from a source that doesn't support attestations (yet!)"
+                "Pure Python on PyPI, but needed a pyodide-recipes patch to work on Pyodide."
             )
-        elif latest_upload < ATTESTATION_ENABLEMENT:
-            package["css_class"] = "default"
-            package["icon"] = "⏰"
-            package["title"] = (
-                "This package was last uploaded before PEP 740 was enabled."
-            )
+        elif has_recipe:
+            package["css_class"] = "recipe"
+            package["icon"] = "🔧"
+            package["title"] = "Built from source via a pyodide-recipes recipe."
+        elif has_pure_python_wheel:
+            package["css_class"] = "pure-py"
+            package["icon"] = "🐍"
+            package["title"] = "Pure Python wheel. Likely works on Pyodide as-is."
         else:
-            package["css_class"] = "warning"
-            package["icon"] = ""
-            package["title"] = "This package doesn't provide attestations (yet!)"
+            # is there any left, based on pythonwheels.com?
+            package["css_class"] = "todo"
+            package["icon"] = "❌"
+            package["title"] = "No PEP 783 wheel, recipe, or pure Python wheel yet."
 
 
 def get_top_packages():
