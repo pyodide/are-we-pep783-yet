@@ -7,10 +7,15 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   update-recipes:
+    name: Update recipe list
     permissions:
-      contents: write
+      contents: write # to commit the refreshed package list
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -24,6 +29,8 @@ jobs:
         run: make update-recipes
 
       - name: Commit and push if the list changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if git diff --quiet -- pyodide-recipes-packages.json; then
             echo "No changes to pyodide-recipes-packages.json"
