@@ -96,7 +96,7 @@ def annotate_wheels(packages, recipe_packages, patched_packages):
         elif has_pure_python_wheel:
             package["css_class"] = "pure-py"
             package["icon"] = "🐍"
-            package["title"] = "Pure Python wheel. Likely works on Pyodide as-is."
+            package["title"] = "Pure Python wheel. May or may not work on Pyodide, depends on the package's functionality and its dependencies."
         else:
             # is there any left, based on pythonwheels.com?
             package["css_class"] = "todo"
