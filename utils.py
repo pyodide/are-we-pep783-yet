@@ -38,10 +38,11 @@ def normalize(name):
 def get_pyodide_recipe_packages():
     print("Getting pyodide-recipes package list...")
     with open("pyodide-recipes-packages.json") as f:
-        return set(json.load(f)["packages"])
+        data = json.load(f)
+    return set(data["packages"]), set(data["patched_packages"])
 
 
-def annotate_wheels(packages, recipe_packages):
+def annotate_wheels(packages, recipe_packages, patched_packages):
     print("Getting wheel data...")
     num_packages = len(packages)
     for index, package in enumerate(packages):
@@ -71,19 +72,20 @@ def annotate_wheels(packages, recipe_packages):
                 has_pure_python_wheel = True
 
         has_recipe = normalize(package["name"]) in recipe_packages
+        has_patch = normalize(package["name"]) in patched_packages
 
         package["wheel"] = has_pep783_wheel
         if has_pep783_wheel:
             package["css_class"] = "success"
             package["icon"] = "🟢"
             package["title"] = "Ships a PEP 783 pyemscripten wheel on PyPI."
-        elif has_recipe and has_pure_python_wheel:
+        elif has_pure_python_wheel and has_patch:
             package["css_class"] = "recipe-pure-py"
             package["icon"] = "🩹"
             package["title"] = (
                 "Pure Python on PyPI, but needed a pyodide-recipes patch to work on Pyodide."
             )
-        elif has_recipe:
+        elif has_recipe and not has_pure_python_wheel:
             package["css_class"] = "recipe"
             package["icon"] = "🔧"
             package["title"] = "Built from source via a pyodide-recipes recipe."

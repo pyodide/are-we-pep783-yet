@@ -23,8 +23,8 @@ TO_CHART = 360
 
 def main(to_chart: int = TO_CHART) -> None:
     packages = remove_irrelevant_packages(get_top_packages(), to_chart)
-    recipe_packages = get_pyodide_recipe_packages()
-    annotate_wheels(packages, recipe_packages)
+    recipe_packages, patched_packages = get_pyodide_recipe_packages()
+    annotate_wheels(packages, recipe_packages, patched_packages)
     save_to_file(packages, "results.json")
     generate_svg_wheel(packages, to_chart)
 

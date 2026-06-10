@@ -60,12 +60,18 @@ def main() -> None:
         )
 
         packages = set()
+        patched_packages = set()
         for meta_file in Path(tmpdir, "packages").glob("*/meta.yaml"):
             meta = yaml.safe_load(meta_file.read_text())
             tags = set((meta.get("package") or {}).get("tag") or [])
             if tags & NOT_PYPI_TAGS:
                 continue
-            packages.add(pypi_name(meta))
+            name = pypi_name(meta)
+            packages.add(name)
+            # A recipe with patches needed pyodide-specific changes to work,
+            # as opposed to e.g. just being bundled as a common dependency.
+            if (meta.get("source") or {}).get("patches"):
+                patched_packages.add(name)
 
     now = datetime.datetime.now(tz=datetime.timezone.utc)
     with open("pyodide-recipes-packages.json", "w") as f:
@@ -73,6 +79,7 @@ def main() -> None:
             {
                 "last_update": now.strftime("%A, %d %B %Y, %X %Z"),
                 "packages": sorted(packages),
+                "patched_packages": sorted(patched_packages),
             },
             f,
             indent=1,
