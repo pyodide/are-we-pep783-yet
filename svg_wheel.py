@@ -70,7 +70,7 @@ def angles(index, total):
     return start, stop
 
 
-def add_fraction(wheel, packages, total):
+def add_fraction(wheel, count, total):
     text_attributes = {
         "class": "wheel-text",
         "text-anchor": "middle",
@@ -79,20 +79,17 @@ def add_fraction(wheel, packages, total):
         "font-family": '"Helvetica Neue",Helvetica,Arial,sans-serif',
     }
 
-    # Packages with some sort of wheel
-    wheel_packages = sum(package["wheel"] for package in packages)
-
-    packages_with_wheels = et.SubElement(
+    count_text = et.SubElement(
         wheel,
         "text",
         x=str(CENTER),
         y=str(CENTER - OFFSET),
         attrib=text_attributes,
     )
-    packages_with_wheels.text = f"{wheel_packages}"
+    count_text.text = f"{count}"
 
-    title = et.SubElement(packages_with_wheels, "title")
-    percentage = f"{wheel_packages / float(total):.0%}"
+    title = et.SubElement(count_text, "title")
+    percentage = f"{count / float(total):.0%}"
     title.text = percentage
 
     # Dividing line
@@ -120,7 +117,43 @@ def add_fraction(wheel, packages, total):
     title.text = percentage
 
 
-def generate_svg_wheel(packages, total):
+def add_progress_ring(wheel, count, total):
+    ring_radius = (OUTER_RADIUS + INNER_RADIUS) / 2
+    ring_width = OUTER_RADIUS - INNER_RADIUS
+    circumference = math.tau * ring_radius
+    fraction = count / total
+
+    et.SubElement(
+        wheel,
+        "circle",
+        cx=str(CENTER),
+        cy=str(CENTER),
+        r=str(ring_radius),
+        attrib={
+            "class": "progress-track",
+            "fill": "none",
+            "stroke-width": str(ring_width),
+        },
+    )
+
+    et.SubElement(
+        wheel,
+        "circle",
+        cx=str(CENTER),
+        cy=str(CENTER),
+        r=str(ring_radius),
+        attrib={
+            "class": "progress-fill",
+            "fill": "none",
+            "stroke-width": str(ring_width),
+            "stroke-dasharray": str(circumference),
+            "stroke-dashoffset": str(circumference * (1 - fraction)),
+            "transform": f"rotate(-90 {CENTER} {CENTER})",
+        },
+    )
+
+
+def generate_svg_wheel(packages, total, count, file_name="wheel.svg"):
     wheel = et.Element(
         "svg",
         viewBox=f"0 0 {2 * CENTER} {2 * CENTER}",
@@ -129,8 +162,24 @@ def generate_svg_wheel(packages, total):
     )
     add_annular_sectors(wheel, packages, total)
 
-    add_fraction(wheel, packages, total)
+    add_fraction(wheel, count, total)
 
-    with open("wheel.svg", "wb") as svg:
+    with open(file_name, "wb") as svg:
+        svg.write(HEADERS)
+        svg.write(et.tostring(wheel))
+
+
+def generate_fraction_circle(count, total, file_name):
+    wheel = et.Element(
+        "svg",
+        viewBox=f"0 0 {2 * CENTER} {2 * CENTER}",
+        version="1.1",
+        xmlns="http://www.w3.org/2000/svg",
+    )
+    add_progress_ring(wheel, count, total)
+
+    add_fraction(wheel, count, total)
+
+    with open(file_name, "wb") as svg:
         svg.write(HEADERS)
         svg.write(et.tostring(wheel))

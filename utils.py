@@ -10,6 +10,10 @@ BASE_URL = "https://pypi.org"
 # The PEP 783 platform tag for Pyodide/Emscripten wheels
 PYEMSCRIPTEN_TAG_RE = re.compile(r"pyemscripten_\d+_\d+_wasm32")
 
+# css_class values for packages that work in Pyodide today, either via a
+# PEP 783 wheel on PyPI or via a pyodide-recipes build.
+WORKS_IN_PYODIDE = {"success", "recipe", "recipe-pure-py"}
+
 DEPRECATED_PACKAGES = {
     "BeautifulSoup",
     "bs4",

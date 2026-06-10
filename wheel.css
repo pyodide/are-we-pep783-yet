@@ -28,6 +28,14 @@
   fill: #ffc107;
 }
 
+circle.progress-track {
+  stroke: #ddd;
+}
+
+circle.progress-fill {
+  stroke: #198754;
+}
+
 line.wheel-line {
   stroke: #333;
 }
@@ -37,6 +45,10 @@ text.wheel-text {
 }
 
 @media (prefers-color-scheme: dark) {
+  circle.progress-track {
+    stroke: #333;
+  }
+
   line.wheel-line {
     stroke: #ccc;
   }

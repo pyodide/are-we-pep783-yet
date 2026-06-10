@@ -9,8 +9,9 @@
 # ]
 # ///
 
-from svg_wheel import generate_svg_wheel
+from svg_wheel import generate_fraction_circle, generate_svg_wheel
 from utils import (
+    WORKS_IN_PYODIDE,
     annotate_wheels,
     get_pyodide_recipe_packages,
     get_top_packages,
@@ -26,7 +27,14 @@ def main(to_chart: int = TO_CHART) -> None:
     recipe_packages, patched_packages = get_pyodide_recipe_packages()
     annotate_wheels(packages, recipe_packages, patched_packages)
     save_to_file(packages, "results.json")
-    generate_svg_wheel(packages, to_chart)
+
+    pep783_count = sum(package["wheel"] for package in packages)
+    pyodide_count = sum(
+        package["css_class"] in WORKS_IN_PYODIDE for package in packages
+    )
+
+    generate_svg_wheel(packages, to_chart, pep783_count)
+    generate_fraction_circle(pyodide_count, to_chart, "wheel-pyodide.svg")
 
 
 if __name__ == "__main__":

@@ -41,6 +41,7 @@ jobs:
           cp index.html build/
           cp wheel.css build/
           cp wheel.svg build/
+          cp wheel-pyodide.svg build/
           cp results.json build/
 
       - name: Setup Pages
