@@ -1,5 +1,5 @@
 {
- "last_update": "Wednesday, 10 June 2026, 02:10:17 UTC",
+ "last_update": "Wednesday, 10 June 2026, 02:33:48 UTC",
  "packages": [
   "affine",
   "aiohappyeyeballs",
@@ -306,5 +306,30 @@
   "zengl",
   "zfpy",
   "zstandard"
+ ],
+ "patched_packages": [
+  "argon2-cffi",
+  "cbor-diag",
+  "clarabel",
+  "cysignals",
+  "gensim",
+  "h5py",
+  "healpy",
+  "matplotlib",
+  "numcodecs",
+  "packaging",
+  "pynacl",
+  "pysam",
+  "pytest-benchmark",
+  "python-sat",
+  "rebound",
+  "scikit-image",
+  "scipy",
+  "soundfile",
+  "sourmash",
+  "soxr",
+  "yt",
+  "zarr",
+  "zfpy"
  ]
 }
