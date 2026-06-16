@@ -1,5 +1,5 @@
 {
- "last_update": "Tuesday, 16 June 2026, 05:41:40 UTC",
+ "last_update": "Tuesday, 16 June 2026, 10:52:09 UTC",
  "packages": [
   "affine",
   "aiohappyeyeballs",
@@ -12,9 +12,6 @@
   "apsw",
   "argon2-cffi",
   "argon2-cffi-bindings",
-  "arro3-compute",
-  "arro3-core",
-  "arro3-io",
   "astropy",
   "astropy-iers-data",
   "asttokens",
