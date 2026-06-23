@@ -1,5 +1,5 @@
 {
- "last_update": "Tuesday, 23 June 2026, 05:38:13 UTC",
+ "last_update": "Tuesday, 23 June 2026, 08:56:36 UTC",
  "packages": [
   "affine",
   "aiohappyeyeballs",
@@ -78,7 +78,6 @@
   "exceptiongroup",
   "executing",
   "fastapi",
-  "fastcan",
   "fastparquet",
   "fiona",
   "fonttools",
