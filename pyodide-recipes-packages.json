@@ -1,5 +1,5 @@
 {
- "last_update": "Tuesday, 23 June 2026, 19:01:56 UTC",
+ "last_update": "Tuesday, 23 June 2026, 21:10:45 UTC",
  "packages": [
   "affine",
   "aiohappyeyeballs",
@@ -28,7 +28,6 @@
   "bitarray",
   "bitstring",
   "bleach",
-  "blosc2",
   "bokeh",
   "boost-histogram",
   "bottleneck",
@@ -90,7 +89,6 @@
   "geopandas",
   "gmpy2",
   "google-crc32c",
-  "gsw",
   "h11",
   "h3",
   "h5py",
@@ -177,7 +175,6 @@
   "pure-eval",
   "py",
   "pyarrow",
-  "pycdfpp",
   "pyclipper",
   "pycparser",
   "pycryptodome",
