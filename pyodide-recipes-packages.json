@@ -1,5 +1,5 @@
 {
- "last_update": "Tuesday, 07 July 2026, 02:41:25 UTC",
+ "last_update": "Tuesday, 07 July 2026, 06:36:03 UTC",
  "packages": [
   "affine",
   "aiohappyeyeballs",
@@ -9,7 +9,6 @@
   "annotated-doc",
   "annotated-types",
   "anyio",
-  "apsw",
   "argon2-cffi",
   "argon2-cffi-bindings",
   "astropy",
@@ -19,7 +18,6 @@
   "atomicwrites",
   "attrs",
   "audioop-lts",
-  "awkward-cpp",
   "b2d",
   "bcrypt",
   "beautifulsoup4",
@@ -207,7 +205,6 @@
   "pytest-httpx",
   "python-calamine",
   "python-dateutil",
-  "python-flint",
   "python-flirt",
   "python-magic",
   "python-sat",
