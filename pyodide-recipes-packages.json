@@ -1,5 +1,5 @@
 {
- "last_update": "Friday, 14 August 2026, 12:38:24 UTC",
+ "last_update": "Friday, 14 August 2026, 14:07:43 UTC",
  "packages": [
   "affine",
   "aiohappyeyeballs",
@@ -135,6 +135,7 @@
   "multidict",
   "munch",
   "mypy",
+  "mysqlclient",
   "narwhals",
   "ndindex",
   "netcdf4",
@@ -170,6 +171,8 @@
   "prompt-toolkit",
   "propcache",
   "protobuf",
+  "psycopg",
+  "psycopg-c",
   "pure-eval",
   "py",
   "pyarrow",
@@ -306,6 +309,7 @@
   "matplotlib",
   "numcodecs",
   "packaging",
+  "psycopg-c",
   "pynacl",
   "pysam",
   "pytest-benchmark",
