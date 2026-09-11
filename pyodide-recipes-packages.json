@@ -1,5 +1,5 @@
 {
- "last_update": "Friday, 11 September 2026, 01:14:20 UTC",
+ "last_update": "Friday, 11 September 2026, 06:12:01 UTC",
  "packages": [
   "affine",
   "aiohappyeyeballs",
@@ -15,6 +15,7 @@
   "astropy-iers-data",
   "asttokens",
   "async-timeout",
+  "asyncpg",
   "atomicwrites",
   "attrs",
   "audioop-lts",
@@ -170,6 +171,7 @@
   "propcache",
   "protobuf",
   "psycopg",
+  "psycopg-binary",
   "psycopg-c",
   "pure-eval",
   "py",
@@ -188,7 +190,6 @@
   "pyinstrument",
   "pylimer-tools",
   "pymongo",
-  "pymupdf",
   "pynacl",
   "pyodide-http",
   "pyodide-unix-timezones",
@@ -307,6 +308,7 @@
   "matplotlib",
   "numcodecs",
   "packaging",
+  "psycopg-binary",
   "psycopg-c",
   "pynacl",
   "pysam",
