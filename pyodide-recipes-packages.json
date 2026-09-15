@@ -1,5 +1,5 @@
 {
- "last_update": "Tuesday, 15 September 2026, 00:44:12 UTC",
+ "last_update": "Tuesday, 15 September 2026, 05:33:42 UTC",
  "packages": [
   "affine",
   "aiohappyeyeballs",
@@ -48,7 +48,6 @@
   "cmyt",
   "cobs",
   "colorspacious",
-  "contourpy",
   "coolprop",
   "coverage",
   "crc32c",
