@@ -1,5 +1,5 @@
 {
- "last_update": "Monday, 21 September 2026, 02:11:44 UTC",
+ "last_update": "Monday, 21 September 2026, 08:03:56 UTC",
  "packages": [
   "affine",
   "aiohappyeyeballs",
@@ -19,7 +19,6 @@
   "atomicwrites",
   "attrs",
   "audioop-lts",
-  "b2d",
   "bcrypt",
   "beautifulsoup4",
   "bilby-cython",
@@ -114,7 +113,6 @@
   "lazy-loader",
   "lazy-object-proxy",
   "libcst",
-  "librt",
   "lightgbm",
   "logbook",
   "lxml",
@@ -133,7 +131,6 @@
   "msprime",
   "multidict",
   "munch",
-  "mypy",
   "mysqlclient",
   "narwhals",
   "ndindex",
@@ -288,7 +285,6 @@
   "xarray",
   "xgboost",
   "xlrd",
-  "xxhash",
   "xyzservices",
   "yarl",
   "yt",
