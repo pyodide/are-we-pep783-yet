@@ -1,5 +1,5 @@
 {
- "last_update": "Tuesday, 27 October 2026, 02:14:00 UTC",
+ "last_update": "Tuesday, 27 October 2026, 08:05:04 UTC",
  "packages": [
   "affine",
   "aiohappyeyeballs",
@@ -185,7 +185,6 @@
   "pyheif",
   "pyiceberg",
   "pyinstrument",
-  "pylimer-tools",
   "pymongo",
   "pynacl",
   "pyodide-http",
