@@ -1,5 +1,5 @@
 {
- "last_update": "Tuesday, 17 November 2026, 04:39:17 UTC",
+ "last_update": "Tuesday, 17 November 2026, 13:56:47 UTC",
  "packages": [
   "affine",
   "aiohappyeyeballs",
@@ -93,6 +93,8 @@
   "html5lib",
   "httpcore",
   "httpx",
+  "httpx2",
+  "httpx2-jsfetch",
   "idna",
   "igraph",
   "imageio",
@@ -144,6 +146,7 @@
   "numpy",
   "openai",
   "opencv-python",
+  "opentelemetry-api",
   "optlang",
   "orjson",
   "osqp",
@@ -293,8 +296,7 @@
   "zstandard"
  ],
  "patched_packages": [
-  "argon2-cffi",
-  "cbor-diag",
+  "asyncpg",
   "clarabel",
   "cysignals",
   "gensim",
@@ -303,6 +305,7 @@
   "matplotlib",
   "numcodecs",
   "packaging",
+  "pandas",
   "psycopg-binary",
   "psycopg-c",
   "pynacl",
@@ -312,10 +315,8 @@
   "rebound",
   "scikit-image",
   "scipy",
-  "sisl",
   "soundfile",
   "sourmash",
-  "soxr",
   "yt",
   "zarr",
   "zfpy"
